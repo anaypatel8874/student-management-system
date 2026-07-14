@@ -3,8 +3,8 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
-from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from django.contrib.auth.models import User
 from .forms import StudentForm
 from .models import Student
 
@@ -47,15 +47,18 @@ def register(request):
 # -----------------------------
 # Login View
 # -----------------------------
+
 class UserLoginView(LoginView):
-
     template_name = "accounts/login.html"
-
     redirect_authenticated_user = True
+    success_url = reverse_lazy("dashboard")
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse_lazy("dashboard")
-
 
 # -----------------------------
 # Dashboard
