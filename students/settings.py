@@ -27,8 +27,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     "student-management-system-5ir9.onrender.com",
-    "127.0.0.1",
-    "localhost",
 ]
 
 
