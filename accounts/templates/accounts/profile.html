@@ -1,0 +1,117 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="dashboard-shell">
+
+    <div class="background-animation"></div>
+
+    {% include 'accounts/includes/dashboard_sidebar.html' %}
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">Account</p>
+                <h1>My Profile</h1>
+            </div>
+
+            <div class="topbar-actions">
+
+                <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+                <div class="profile-menu">
+                    <img src="https://i.pravatar.cc/100?u={{ request.user.username }}" alt="">
+                    <span>{{ request.user.username }}</span>
+                    <i class="fa-solid fa-angle-down"></i>
+                    <div class="dropdown">
+                        <a href="{% url 'profile' %}">My Profile</a>
+                        <a href="{% url 'settings_page' %}">Settings</a>
+                        <a href="{% url 'admin:index' %}">Admin Panel</a>
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="profile-grid">
+
+            <article class="panel profile-card">
+
+                <div class="profile-avatar">
+                    <img src="https://i.pravatar.cc/180?u={{ request.user.username }}" alt="">
+                </div>
+
+                <h2>{{ request.user.get_full_name|default:request.user.username }}</h2>
+                <p>{{ request.user.email|default:"Email not set" }}</p>
+
+                <div class="profile-badges">
+                    {% if request.user.is_superuser %}
+                        <span class="status-pill">Superuser</span>
+                    {% endif %}
+                    {% if request.user.is_staff %}
+                        <span class="status-pill">Staff</span>
+                    {% endif %}
+                    <span class="status-pill">Active</span>
+                </div>
+
+            </article>
+
+            <article class="panel profile-details">
+
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">Details</p>
+                        <h3>Account Information</h3>
+                    </div>
+                    <a class="soft-button" href="{% url 'settings_page' %}">
+                        <i class="fa-solid fa-gear"></i>
+                        Settings
+                    </a>
+                </div>
+
+                <dl class="detail-list">
+                    <div>
+                        <dt>Username</dt>
+                        <dd>{{ request.user.username }}</dd>
+                    </div>
+                    <div>
+                        <dt>First Name</dt>
+                        <dd>{{ request.user.first_name|default:"Not set" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Last Name</dt>
+                        <dd>{{ request.user.last_name|default:"Not set" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Email</dt>
+                        <dd>{{ request.user.email|default:"Not set" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Date Joined</dt>
+                        <dd>{{ request.user.date_joined|date:"M d, Y" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Last Login</dt>
+                        <dd>{{ request.user.last_login|date:"M d, Y, h:i A"|default:"Not available" }}</dd>
+                    </div>
+                </dl>
+
+            </article>
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

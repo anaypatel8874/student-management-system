@@ -1,0 +1,133 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="dashboard-shell">
+
+    <div class="background-animation"></div>
+
+    {% include 'accounts/includes/dashboard_sidebar.html' %}
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">{{ section_label }}</p>
+                <h1>{{ page_title }}</h1>
+            </div>
+
+            <div class="topbar-actions">
+
+                <label class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" placeholder="{{ search_placeholder }}">
+                </label>
+
+                <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+                <div class="profile-menu">
+                    <img src="https://i.pravatar.cc/100?u={{ request.user.username }}" alt="">
+                    <span>{{ request.user.username }}</span>
+                    <i class="fa-solid fa-angle-down"></i>
+                    <div class="dropdown">
+                        <a href="{% url 'profile' %}">My Profile</a>
+                        <a href="{% url 'settings_page' %}">Settings</a>
+                        <a href="{% url 'admin:index' %}">Admin Panel</a>
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="stats-grid" aria-label="{{ page_title }} summary">
+            {% for card in cards %}
+                <article class="stat-card {{ card.color }}">
+                    <div class="card-icon">
+                        <i class="{{ card.icon }}"></i>
+                    </div>
+                    <div class="card-info">
+                        <h2>{{ card.value }}</h2>
+                        <p>{{ card.label }}</p>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+
+        <section class="panel management-panel" data-section="{{ active_page }}">
+
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">{{ table_label }}</p>
+                    <h3>{{ table_title }}</h3>
+                </div>
+                <button class="soft-button js-add-row" type="button">
+                    <i class="fa-solid fa-plus"></i>
+                    Add
+                </button>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            {% for heading in headings %}
+                                <th>{{ heading }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody data-table-body>
+                        {% for row in rows %}
+                            <tr>
+                                {% for item in row %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <div class="modal-backdrop" data-add-modal hidden>
+            <div class="add-modal" role="dialog" aria-modal="true" aria-labelledby="addModalTitle">
+
+                <div class="modal-header">
+                    <div>
+                        <p class="eyebrow">{{ page_title }}</p>
+                        <h3 id="addModalTitle">Add {{ page_title }}</h3>
+                    </div>
+                    <button class="icon-button" type="button" data-close-modal aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <form data-add-form>
+                    <div class="modal-fields" data-modal-fields></div>
+
+                    <div class="modal-actions">
+                        <button class="soft-button" type="button" data-close-modal>Cancel</button>
+                        <button class="primary-button" type="submit">
+                            <i class="fa-solid fa-check"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}

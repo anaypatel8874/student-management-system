@@ -1,0 +1,29 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | SMS Admin{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name" class="sms-admin-brand">
+    <a href="{% url 'admin:index' %}">
+        <span class="sms-admin-logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+        </span>
+        <span>
+            <strong>Student Management</strong>
+            <small>Admin Panel</small>
+        </span>
+    </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<a class="sms-admin-dashboard-link" href="{% url 'dashboard' %}">
+    Dashboard
+</a>
+{% endblock %}
