@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from .forms import StudentForm
 
 from .forms import RegisterForm
 
@@ -250,3 +251,35 @@ from django.shortcuts import render, redirect
 
 def home(request):
     return redirect("login")
+@login_required
+def add_student(request):
+
+    if request.method == "POST":
+
+        form = StudentForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                "Student Added Successfully!"
+            )
+
+            return redirect("students_page")
+
+    else:
+
+        form = StudentForm()
+
+    return render(
+        request,
+        "accounts/add_student.html",
+        {
+            "form": form
+        }
+    )
