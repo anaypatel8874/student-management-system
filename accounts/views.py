@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from .forms import StudentForm
+from .models import Student
 
 from .forms import RegisterForm
 
@@ -254,24 +255,14 @@ def add_student(request):
 
     if request.method == "POST":
 
-        form = StudentForm(
-            request.POST,
-            request.FILES
-        )
+        form = StudentForm(request.POST, request.FILES)
 
         if form.is_valid():
-
             form.save()
-
-            messages.success(
-                request,
-                "Student Added Successfully!"
-            )
-
-            return redirect("students_page")
+            messages.success(request, "Student Added Successfully!")
+            return redirect("student_list")
 
     else:
-
         form = StudentForm()
 
     return render(
@@ -279,5 +270,17 @@ def add_student(request):
         "accounts/add_student.html",
         {
             "form": form
+        }
+    )
+@login_required   
+def student_list(request):
+
+    students = Student.objects.all().order_by("-id")
+
+    return render(
+        request,
+        "accounts/student_list.html",
+        {
+            "students": students
         }
     )

@@ -148,7 +148,10 @@
                 <div class="panel-header">
                     <div>
                         <p class="eyebrow">Students</p>
-                        <h3>Recent Students</h3>
+                        <a href="{% url 'student_list' %}" class="soft-button">
+    <i class="fa-solid fa-users"></i>
+    View Students
+</a>
                     </div>
                     <a href="{% url 'add_student' %}" class="soft-button">
     <i class="fa-solid fa-plus"></i>
