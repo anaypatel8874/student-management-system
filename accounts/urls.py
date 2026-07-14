@@ -1,3 +1,4 @@
+path("", views.home, name="home"),
 from django.urls import path
 from django.contrib.auth.views import (
     LogoutView,
