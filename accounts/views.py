@@ -246,7 +246,7 @@ def profile(request):
             "active_page": "profile",
         }
     )
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 
 def home(request):
     return redirect("login")
