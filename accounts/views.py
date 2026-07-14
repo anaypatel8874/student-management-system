@@ -21,16 +21,14 @@ def register(request):
 
         if form.is_valid():
 
-            user = form.save()
-
-            login(request, user)
+            form.save()
 
             messages.success(
                 request,
-                "Registration Successful!"
+                "Registration Successful! Please login."
             )
 
-            return redirect("dashboard")
+            return redirect("login")
 
     else:
 
